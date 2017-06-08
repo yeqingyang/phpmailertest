@@ -7,19 +7,21 @@
  */
 require 'PHPMailerAutoload.php';
 
+$config = parse_ini_file('config.ini', true);
+
 $mail = new PHPMailer;
 
 //$mail->SMTPDebug = 3;                               // Enable verbose debug output
 
 $mail->isSMTP();                                      // Set mailer to use SMTP
-$mail->Host = 'smtp.163.com';  // Specify main and backup SMTP servers
+$mail->Host = $config['mail']['smtphost'];  // Specify main and backup SMTP servers
 $mail->SMTPAuth = true;                               // Enable SMTP authentication
-$mail->Username = 'lpz8120903@163.com';                 // SMTP username
-$mail->Password = '*';                           // SMTP password
-$mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
-$mail->Port = 465;                                    // TCP port to connect to
+$mail->Username = $config['mail']['username'];                 // SMTP username
+$mail->Password = $config['mail']['password'];                           // SMTP password
+$mail->SMTPSecure = $config['mail']['smtpsecure'];                            // Enable TLS encryption, `ssl` also accepted
+$mail->Port = $config['mail']['smtpport'];                                    // TCP port to connect to
 
-$mail->setFrom('lpz8120903@163.com', 'Mailer');
+$mail->setFrom($config['mail']['sender'], 'Mailer');
 $mail->addAddress('lpz8120903@163.com', 'Joe User');     // Add a recipient
 //$mail->addAddress('ellen@example.com');               // Name is optional
 //$mail->addReplyTo('info@example.com', 'Information');
