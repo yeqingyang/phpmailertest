@@ -9,7 +9,7 @@ class MailSendGateway
 {
     public static function sendMailer($config, $address, $subject, $context, $attachment)
     {
-        echo 'Sending '. $address.'\n';
+        //echo 'Sending '. $address.'\n';
         $mail = new PHPMailer;
         //$mail->SMTPDebug = 3;                               // Enable verbose debug output
         $mail->isSMTP();                                      // Set mailer to use SMTP
@@ -21,7 +21,14 @@ class MailSendGateway
         $mail->Port = $config['mail']['smtpport'];                                    // TCP port to connect to
 
         $mail->setFrom($config['mail']['sender'], 'Mailer');
-        $mail->addAddress($address);     // Add a recipient
+        if (is_array($address)) {
+            foreach($address as $index=>$oneAddress) {
+                $mail->addAddress($oneAddress);
+            }
+        } else {
+            $mail->addAddress($address);     // Add a recipient
+        }
+
 //$mail->addAddress('ellen@example.com');               // Name is optional
 //$mail->addReplyTo('info@example.com', 'Information');
 //$mail->addCC('cc@example.com');
@@ -35,11 +42,28 @@ class MailSendGateway
         $mail->Body    = $context;
         //$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
-        if(!$mail->send()) {
+        $result = $mail->send();
+        if(!$result) {
             echo ' Failed.';
             echo ' Mailer Error: ' . $mail->ErrorInfo.'\n';
+
         } else {
+
             echo ' Success\n';
         }
+
+        return self::addResult($address, $result);
+    }
+
+    public static function addResult($address, $result) {
+        $resultArray = array();
+        if (is_array($address)) {
+            foreach($address as $index=>$oneAddress) {
+                $resultArray[$oneAddress] = $result;
+            }
+        } else {
+            $resultArray[$address] = $result;     // Add a recipient
+        }
+        return $resultArray;
     }
 }
