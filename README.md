@@ -33,6 +33,7 @@ typeToAttachment = typeToAttachment.csv
 - addressFile 是收件人地址、类别，文件默认实在项目文件夹下，这里也可以是文件的绝度路径例如是C:/sender.csv。
 - typeToAttachment 是类别、主题、正文、附件的绝对路径。
 - 注意addressFile typeToAttachment文件的第一行都是表头，代码会忽略第一行。
+- ==ps：编辑好自己的sender.csv typeToAttachment.csv, 注意文件最好保存为utf8编码格式，否则中文可能会出现乱码==
 
 ## 4 发送邮件
 ### 手动发送
